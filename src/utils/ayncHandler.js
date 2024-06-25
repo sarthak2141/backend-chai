@@ -13,7 +13,7 @@ const asyncHandler=(requestHandler)=>{
 
 
 
-
+///they both are need to knnow --->
 
 {/* 
 2ND way of doing by try catch --->>>>>
