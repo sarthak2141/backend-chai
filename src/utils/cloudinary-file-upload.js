@@ -1,6 +1,6 @@
  import { v2 as cloudinary} from "cloudinary";
  import fs from 'fs' 
- import { v2 as cloudinary } from 'cloudinary';
+//  import { v2 as cloudinary } from 'cloudinary';
 
 
     // Configuration
@@ -18,7 +18,8 @@
                 resource_type:"auto"
             }) 
             // file haas been uploded successfull
-            console.log("file is uploded on cloudinery", response.url);
+            // console.log("file is uploded on cloudinery", response.url);
+            fs.unlinkSync(localfilePath);
             return response;
         }
         catch(error){

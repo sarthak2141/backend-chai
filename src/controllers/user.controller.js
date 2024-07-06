@@ -26,15 +26,16 @@ import{uploadOnCloudinery} from "../utils/cloudinary-file-upload.js"
 //     throw new ApiError(400,"fullname is required")
 //  }
 // check all of them
+// console.log( "ye req.body hai",req.body);
 if( 
-    [fullName,email,username,password].some((field)=>feild?.trim()==="")
+    [fullName,email,username,password].some((field)=>field?.trim()==="")
 )
 {
     throw new ApiError(400,"All fields are required");
 }
   
 
- const existedUser= User.findOne({
+ const existedUser= await User.findOne({
     $or:[{username},{email}]
  })
  if(existedUser){
@@ -42,7 +43,15 @@ if(
     
  }
   const avatarLocalPath= req.files?.avatar[0]?.path;
-  const coverImageLocalPath=req.files?.coverImage[0]?.path;
+//   const coverImageLocalPath=req.files?.coverImage[0]?.path;
+  let coverImageLocalPath;
+//   way to chcheck that user upload  the coverimage or not or we got cover image or not----->>>>
+ if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length>0){
+    coverImageLocalPath=req.files.coverImage[0].path
+ }
+
+
+  console.log(req.files);
 
 if(!avatarLocalPath){
     throw new ApiError(400,"Avatar file is required");
@@ -61,10 +70,10 @@ const user= await User.create({
     coverImage:coverImage?.url||"",
     email,
     password,
-    username:username.toLowercase()
+    username:username?.toLowerCase()
 
 })
-
+console.log(user);
 
  const createdUser=  await User.findById(user._id).select(
     "-password -refreshToken"
